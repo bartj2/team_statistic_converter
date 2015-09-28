@@ -45,3 +45,7 @@ histogram(BW2, 20); % Zeige histogramm von BW2
 figure(F);F=F+1;
 imshowpair(BW1, BW2, 'montage'); % Vergleiche BW1 und BW2
 
+LOG = edge(ImageGray, 'log');
+figure(F);F=F+1;
+imshow(LOG);
+
