@@ -33,19 +33,8 @@ figure(F);F=F+1
 imshow(ImageGray)
 
 % Teste die Funktion edge:
-BW1 = edge(ImageGray, 'Canny');
 BW2 = edge(ImageGray, 'Prewitt');
 figure(F);F=F+1;    % Zeige das Bild nach der Funktion edge
 imshow(BW2);
 
-
-figure(F);F=F+1;
-histogram(BW2, 20); % Zeige histogramm von BW2
-
-figure(F);F=F+1;
-imshowpair(BW1, BW2, 'montage'); % Vergleiche BW1 und BW2
-
-LOG = edge(ImageGray, 'log');
-figure(F);F=F+1;
-imshow(LOG);
 
