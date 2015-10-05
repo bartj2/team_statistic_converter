@@ -38,3 +38,4 @@ figure(F);F=F+1;    % Zeige das Bild nach der Funktion edge
 imshow(BW2);
 
 
+% Testprogramm nur fuer Joel
