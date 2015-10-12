@@ -29,8 +29,8 @@ axis equal          % Achsen des Bildes fixieren, um keine Verzerrungen zu erhal
 
 % Konvertiere das 'Image' in ein Graustufenbild.
 ImageGray = rgb2gray(Image);
-figure(F);F=F+1
-imshow(ImageGray)
+%figure(F);F=F+1
+%imshow(ImageGray)
 
 % Teste die Funktion edge:
 BW2 = edge(ImageGray, 'Prewitt');
@@ -38,4 +38,3 @@ figure(F);F=F+1;    % Zeige das Bild nach der Funktion edge
 imshow(BW2);
 
 
-% Testprogramm nur fuer Joel
