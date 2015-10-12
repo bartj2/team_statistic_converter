@@ -31,10 +31,56 @@ axis equal          % Achsen des Bildes fixieren, um keine Verzerrungen zu erhal
 ImageGray = rgb2gray(Image);
 %figure(F);F=F+1
 %imshow(ImageGray)
+Bin = im2bw(ImageGray);
+Bin = imcomplement(Bin);
+figure(F);F=F+1;
+imshow(Bin);
 
 % Teste die Funktion edge:
-BW2 = edge(ImageGray, 'Prewitt');
+BW = edge(ImageGray, 'Prewitt');
 figure(F);F=F+1;    % Zeige das Bild nach der Funktion edge
-imshow(BW2);
+imshow(BW);
 
+%% Teste Houghtransformation:
+% a) vor edge
+[Hough, Theta, Rho] = hough(Bin, 'RhoResolution', 1, ...
+    'ThetaResolution', 1);
+figure(F);F=F+1;
+imshow(imadjust(mat2gray(Hough)), 'XData', Theta, 'YData', Rho,...
+    'InitialMagnification', 'fit');
+axis on, axis normal; hold on;
+colormap(hot);
+title('Houghtransformation vor edge befehl');
+xlabel('\theta / deg');
+ylabel('\rho / ??');
+colorbar;
+
+% use houghpeaks:
+Peaks = houghpeaks(Hough, 50);
+plot(Theta(Peaks(:,2)),Rho(Peaks(:,1)),'s','color','black');
+
+% use houghlines:
+lines = houghlines(Bin, Theta, Rho, Peaks, 'FillGap', 5, 'MinLength', 7);
+figure(F); F=F+1;
+%imshow(Bin);
+hold on;
+for k=1:length(lines)
+    xy = [lines(k).point1; lines(k).point2];
+    plot(xy(:,1), xy(:,2), 'LineWidth', 2, 'Color', 'green');
+    %hold on;
+end
+
+% **************************************************************
+% b) nach edge
+[Hough, Theta, Rho] = hough(BW, 'RhoResolution', 0.5, ...
+    'ThetaResolution', 0.5);
+F=F+1;figure(F);
+imshow(imadjust(mat2gray(Hough)), 'XData', Theta, 'YData', Rho,...
+    'InitialMagnification', 'fit');
+axis on, axis normal; 
+colormap(hot);
+title('Houghtransformation nach edge befehl');
+xlabel('\theta / deg');
+ylabel('\rho / ??');
+colorbar;
 
