@@ -55,33 +55,36 @@ xlabel('\theta / deg');
 ylabel('\rho / ??');
 colorbar;
 
+%max = find(Hough==max(Hough(:)))
 % use houghpeaks:
-Peaks = houghpeaks(Hough, 50);
-plot(Theta(Peaks(:,2)),Rho(Peaks(:,1)),'s','color','black');
+Peaks = houghpeaks(Hough, 500, 'Threshold', 0.2.*max(Hough(:)), 'NHoodSize', [1, 1]);
+plot(Theta(Peaks(:,2)),Rho(Peaks(:,1)),'s','color','green');
 hold off
 
 % use houghlines:
-lines = houghlines(Bin, Theta, Rho, Peaks, 'FillGap', 0.5, 'MinLength', 7);
+lines = houghlines(Bin, Theta, Rho, Peaks, 'FillGap', 15, 'MinLength', 700);
 figure(F); F=F+1;
-image(Image), hold on, axis equal
+image(Image)
+hold on
+axis equal
 n = length(lines)
 for k=1:n
     xy = [lines(k).point1; lines(k).point2];
-    plot(xy(:,1), xy(:,2), 'LineWidth', 1, 'Color', 'blue');
+    plot(xy(:,1), xy(:,2), 'LineWidth', 3, 'Color', 'blue');
 
 end
-
+hold off
 % **************************************************************
 % b) nach edge
-[Hough, Theta, Rho] = hough(BW, 'RhoResolution', 0.5, ...
-    'ThetaResolution', 0.5);
-figure(F);F=F+1;
-imshow(imadjust(mat2gray(Hough)), 'XData', Theta, 'YData', Rho,...
-    'InitialMagnification', 'fit');
-axis on, axis normal; 
-colormap(hot);
-title('Houghtransformation nach edge befehl');
-xlabel('\theta / deg');
-ylabel('\rho / ??');
-colorbar;
-
+% [Hough, Theta, Rho] = hough(BW, 'RhoResolution', 0.5, ...
+%     'ThetaResolution', 0.5);
+% figure(F);F=F+1;
+% imshow(imadjust(mat2gray(Hough)), 'XData', Theta, 'YData', Rho,...
+%     'InitialMagnification', 'fit');
+% axis on, axis normal; 
+% colormap(hot);
+% title('Houghtransformation nach edge befehl');
+% xlabel('\theta / deg');
+% ylabel('\rho / ??');
+% colorbar;
+% 
