@@ -22,3 +22,6 @@ Image = imread(IMAGE_PATH);
 iminfo = imfinfo(IMAGE_PATH); % Informationen zum Bild ausgeben
 Linien = ermittleLinien(Image);
 [Texte, textBBoxes] = ermittleTexte(Image);
+Zellen = ermittleZellen(Texte);
+erstelleCSV(Zellen);
+close all;
