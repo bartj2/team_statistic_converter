@@ -6,7 +6,7 @@ I = imfilter(Y,H,'replicate');
 
 imshow(I);
 [mserRegions] = detectMSERFeatures(I, ... 
-    'RegionAreaRange',[10 500],'ThresholdDelta',10);
+    'RegionAreaRange',[10 500],'ThresholdDelta',8);
 % 'ThresholdDelta' is a numeric value in the range (0,100]. 
 %This value is expressed as a percentage of the input data type range used
 %in selecting extremal regions while testing for their stability. 
@@ -21,7 +21,7 @@ hold off
 
 sz = size(I);
 pixelIdxList = cellfun(@(xy)sub2ind(sz, xy(:,2), xy(:,1)), ...
-    mserRegions.PixelList, 'UniformOutput', false);             %cellfun: f�hrt eine Funktion bei allen Elementen durch. sub2ind:subscript(tiefstellung)
+    mserRegions.PixelList, 'UniformOutput', false);             %cellfun: fï¿œhrt eine Funktion bei allen Elementen durch. sub2ind:subscript(tiefstellung)
 
 
 mserConnComp.Connectivity = 8;
@@ -62,14 +62,15 @@ xmax = xmin + bboxes(:,3) - 1;
 ymax = ymin + bboxes(:,4) - 1;
 
 % Expand the bounding boxes by a small amount.
-expansionAmount = 0.01;
-xmin = (1-expansionAmount) * xmin;%erweitert nach links
-ymin = (1-expansionAmount) * ymin;
-xmax = (1+expansionAmount) * xmax;%erweitert nach rechts
-ymax = (1+expansionAmount) * ymax;
+expansionAmount_in_x = 0.014;
+expansionAmount_in_y = 0.0045;
+xmin = (1-expansionAmount_in_x) * xmin;%erweitert nach links
+ymin = (1-expansionAmount_in_y) * ymin;
+xmax = (1+expansionAmount_in_x) * xmax;%erweitert nach rechts
+ymax = (1+expansionAmount_in_y) * ymax;
 
 % Clip the bounding boxes to be within the image bounds
-xmin = max(xmin, 1); %ersetzt alle mit 1, die kleiner als 1 sind. 
+xmin = max(xmin, 1); %ersetzt alle mit 1, die kleiner als 1 sind. Um Pixelanzahl zu einer ganzen Zahl zu verrunden!!!
 ymin = max(ymin, 1);
 xmax = min(xmax, size(I,2));
 ymax = min(ymax, size(I,1));
@@ -117,6 +118,7 @@ componentIndices = conncomp(g);
 % connected component.
 
 % Merge the boxes based on the minimum and maximum dimensions.
+%Die überlappte Rechtecke werden zu einem Rechteck zusammengefügt. 
 xmin = accumarray(componentIndices', xmin, [], @min);
 ymin = accumarray(componentIndices', ymin, [], @min);
 xmax = accumarray(componentIndices', xmax, [], @max);
@@ -148,18 +150,8 @@ title('Detected Text')
 % regions, the output of the |ocr| function would be considerably more
 % noisy.
 
-results = ocr(I, textBBoxes,'TextLayout','Line');
+results = ocr(I, textBBoxes,'TextLayout','Word','Language','German');
 [results.Text]
-%'TextLayout','Line'
-% wort=results.Words
-% wortbox=results.WordBoundingBoxes;
-% 
-% % Show the location of the word in the original image
-% figure;
-% Iname = insertObjectAnnotation(I, 'rectangle', wortbox, wort);
-% imshow(I);  
-
-%Versuchen x und o zu dedektieren. 
 
 Texte = results;
 
