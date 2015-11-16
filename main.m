@@ -1,26 +1,30 @@
 % Dateiname: main.m
 % Projekt: Digitalisierung von Anwesenheitslisten.
 % Version: Siehe Git
-% Author: Joel Baertschi [bartj2 or bcj1]
+% Author: Joel Baertschi [bartj2 oder bcj1]
 % Beschreibung:
-%   Diese main-Datei liest ein Bild ein und bereitet es fuer eine
-%   Weiterverarbeitung auf.
-%
+%   Diese main-Datei liest ein Bild ein und erstellt daraus eine CSV Datei.
+%   Das Bild sollte Tabellenfoermig sein und keine perspektivische
+%   Verzerrungen aufweisen.
 %
 % *************************************************************************
 
-% Säubere den Workspace:
+% Saeubere den Workspace:
 clear all; close all;
 
-% Konstante Variablen:
+% Bild Einlesen
 IMAGE_PATH = 'Abwesenheitsliste_Selbstgemacht_Eingescannt_rotated.jpg';
-
-%% *************** Bild einlesen und vorverarbeiten ***********************
-% Lies Bild ein und speichere es in Matrix Image.
 Image = imread(IMAGE_PATH);
-
 iminfo = imfinfo(IMAGE_PATH); % Informationen zum Bild ausgeben
+
+% versuche Linien der Tabelle zu erkennen:
 Linien = ermittleLinien(Image);
+
+% versuche alle auftretenden Texte zu identifizieren:
 [Texte, textBBoxes] = ermittleTexte(Image);
+
+% Bestimme die Zeilen und Spalten der Texte innerhalb der Tabelle:
 Zellen = ermittleZellen(Texte, Linien);
+
+% Erzeuge die CSV Datei:
 erstelleCSV(Zellen);
