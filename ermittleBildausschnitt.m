@@ -7,8 +7,8 @@ if strcmp(Kategorie, 'Namen')
 end
 
 dim = size(Image);
-Bildausschnitt = zeros(dim(1),dim(2),dim(3));
-Bildausschnitt = Image(Idx(1):Idx(2),Idx(3):Idx(4),:);
+Bildausschnitt = uint8(zeros(dim(1),dim(2),dim(3)));
+Bildausschnitt(Idx(1):Idx(2),Idx(3):Idx(4),:) = Image(Idx(1):Idx(2),Idx(3):Idx(4),:);
 end
 
 
