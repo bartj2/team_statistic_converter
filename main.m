@@ -20,6 +20,9 @@ iminfo = imfinfo(IMAGE_PATH); % Informationen zum Bild ausgeben
 % versuche Linien der Tabelle zu erkennen:
 Linien = ermittleLinien(Image);
 
+Image = ermittleBildausschnitt('Namen', Image, Linien);
+imshow(Image)
+
 % versuche alle auftretenden Texte zu identifizieren:
 [Texte, textBBoxes] = ermittleTexte(Image);
 
