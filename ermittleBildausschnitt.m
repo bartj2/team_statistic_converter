@@ -11,7 +11,7 @@ elseif strcmp(Kategorie, 'Daten')
 end
 
 dim = size(Image);
-Bildausschnitt = uint8(zeros(dim(1),dim(2),dim(3)));
+Bildausschnitt = uint8(ones(dim(1),dim(2),dim(3))).*255;
 Bildausschnitt(Idx(1):Idx(2),Idx(3):Idx(4),:) = Image(Idx(1):Idx(2),Idx(3):Idx(4),:);
 end
 
