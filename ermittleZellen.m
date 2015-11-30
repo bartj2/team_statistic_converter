@@ -1,7 +1,7 @@
-function [Zellen] = ermittleZellen(Texte, Linien)
+function [Zellen] = ermittleZellen(Texte, Linien, Zellen)
 
 N = length(Texte);
-Zellen = {};
+
 z = 1;
 
 [Hor Vert] = ermittleLinien(Linien);
@@ -11,7 +11,7 @@ z = 1;
 for i = 1:N
     
 if strcmp(Texte(i).Text, '') == 0
-    Texte(i)
+    Texte(i);
     sp = berechneSchwerpunkt(Texte(i).WordBoundingBoxes);
     z = ermittleZeile(Hor, sp);
     s = ermittleSpalte(Vert, sp);

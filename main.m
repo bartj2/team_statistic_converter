@@ -20,14 +20,33 @@ iminfo = imfinfo(IMAGE_PATH); % Informationen zum Bild ausgeben
 % versuche Linien der Tabelle zu erkennen:
 Linien = ermittleLinien(Image);
 
-Image = ermittleBildausschnitt('Namen', Image, Linien);
-imshow(Image)
+
+%% Daten
+BildDaten = ermittleBildausschnitt('Daten', Image, Linien);
+imshow(BildDaten)
 
 % versuche alle auftretenden Texte zu identifizieren:
-[Texte, textBBoxes] = ermittleTexte(Image);
+[Texte, textBBoxes] = ermittleTexte(BildDaten, 'Daten');
 
+Zellen = {};
 % Bestimme die Zeilen und Spalten der Texte innerhalb der Tabelle:
-Zellen = ermittleZellen(Texte, Linien);
+Zellen = ermittleZellen(Texte, Linien, Zellen);
+
+
+
+%% Zeichen
+BildZeichen = ermittleBildausschnitt('Zeichen', Image, Linien);
+imshow(BildZeichen)
+[Texte, textBBoxes] = ermittleTexte(BildZeichen, 'Zeichen');
+Zellen = ermittleZellen(Texte, Linien, Zellen);
+
+%% Namen
+BildNamen = ermittleBildausschnitt('Namen', Image, Linien);
+imshow(BildNamen)
+[Texte, textBBoxes] = ermittleTexte(BildNamen, 'Namen');
+Zellen = ermittleZellen(Texte, Linien, Zellen);
+
+
 
 % Erzeuge die CSV Datei:
 erstelleCSV(Zellen);

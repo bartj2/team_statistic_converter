@@ -1,4 +1,4 @@
-function [Texte, textBBoxes] = ermittleTexte( Y )
+function [Texte, textBBoxes] = ermittleTexte( Y, Datentyp )
 
 Y = rgb2gray(Y);
 H = fspecial('gaussian',10,0.5);
@@ -62,12 +62,25 @@ xmax = xmin + bboxes(:,3) - 1;
 ymax = ymin + bboxes(:,4) - 1;
 
 % Expand the bounding boxes by a small amount.
-expansionAmount_in_x = 0.014;
-expansionAmount_in_y = 0.0045;
-xmin = (1-expansionAmount_in_x) * xmin;%erweitert nach links
-ymin = (1-expansionAmount_in_y) * ymin;
-xmax = (1+expansionAmount_in_x) * xmax;%erweitert nach rechts
-ymax = (1+expansionAmount_in_y) * ymax;
+% expansionAmount_in_x = 0.014;
+% expansionAmount_in_y = 0.0045;
+% xmin = (1-expansionAmount_in_x) * xmin;%erweitert nach links
+% ymin = (1-expansionAmount_in_y) * ymin;
+% xmax = (1+expansionAmount_in_x) * xmax;%erweitert nach rechts
+% ymax = (1+expansionAmount_in_y) * ymax;
+
+if (strcmp(Datentyp, 'Daten') == 1 )
+    xmin = xmin - 22;
+    xmax = xmax + 4;
+    ymin = ymin - 5;
+    ymax = ymax + 2;
+else
+    xmin = xmin - 3;
+    xmax = xmax + 16;
+    ymin = ymin - 5;
+    ymax = ymax + 3;
+end
+
 
 % Clip the bounding boxes to be within the image bounds
 xmin = max(xmin, 1); %ersetzt alle mit 1, die kleiner als 1 sind. Um Pixelanzahl zu einer ganzen Zahl zu verrunden!!!
