@@ -1,5 +1,6 @@
 function [Texte, textBBoxes] = ermittleTexte( Y, Datentyp )
 
+% Vorverarbeitung
 Y = rgb2gray(Y);
 H = fspecial('gaussian',10,0.5);
 I = imfilter(Y,H,'replicate');
@@ -20,8 +21,9 @@ title('MSER regions')
 hold off
 
 sz = size(I);
+%cellfun: fuehrt eine Funktion bei allen Elementen durch. sub2ind:subscript(tiefstellung)
 pixelIdxList = cellfun(@(xy)sub2ind(sz, xy(:,2), xy(:,1)), ...
-    mserRegions.PixelList, 'UniformOutput', false);             %cellfun: fï¿œhrt eine Funktion bei allen Elementen durch. sub2ind:subscript(tiefstellung)
+    mserRegions.PixelList, 'UniformOutput', false);             
 
 
 mserConnComp.Connectivity = 8;
@@ -163,8 +165,14 @@ title('Detected Text')
 % regions, the output of the |ocr| function would be considerably more
 % noisy.
 
-results = ocr(I, textBBoxes,'TextLayout','Word','Language','German');
-[results.Text]
+if strcmp(Datentyp, 'Zeichen')
+    results = ocr(I, textBBoxes,'TextLayout','Word','Language','German',...
+        'CharacterSet', 'xoXO0');
+else
+    results = ocr(I, textBBoxes,'TextLayout','Word','Language','German');
+end
+
+%[results.Text]
 
 Texte = results;
 

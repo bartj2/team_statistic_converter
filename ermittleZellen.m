@@ -1,29 +1,25 @@
 function [Zellen] = ermittleZellen(Texte, Linien, Zellen)
+% Diese Funktion ordnet jeden Text in seine korrekte Zelle anhand der
+% Linien (Tabellenraster).
 
 N = length(Texte);
-
 z = 1;
 
-[Hor Vert] = ermittleLinien(Linien);
+[Hor Vert] = sortiereLinien(Linien);
 
 
 
 for i = 1:N
     
-if strcmp(Texte(i).Text, '') == 0
-    Texte(i);
-    sp = berechneSchwerpunkt(Texte(i).WordBoundingBoxes);
-    z = ermittleZeile(Hor, sp);
-    s = ermittleSpalte(Vert, sp);
-    
-    
-    Zellen{z,s} = Texte(i).Words;
-    
+    if strcmp(Texte(i).Text, '') == 0 
+        % Falls Text nicht leer ist:
+        sp = berechneSchwerpunkt(Texte(i).WordBoundingBoxes);
+        z = ermittleZeile(Hor, sp);
+        s = ermittleSpalte(Vert, sp);
+        Zellen{z,s} = Texte(i).Words; % text in Zellen abspeichern.
+    end
 end
 
-
-
-end
 end
 
 
@@ -35,8 +31,9 @@ end
 
 
 
-function [Hor Vert] = ermittleLinien(Linien)
-    
+function [Hor Vert] = sortiereLinien(Linien)
+% Diese Funkiton klassifiziert die Linien in horizontale und vertikale 
+% Linien und sortiert sie nach Ort im Bild.   
     v = 1;
     h = 1;
     N = length(Linien);
@@ -68,7 +65,7 @@ end
 
 
 function Zeile = ermittleZeile(LinienHorizontal, Schwerpunkt)
-
+% Diese Funktion berechnet die Zeilennummer des Schwerpunktes eines Textes.
     Zeile = 1;
     N = length(LinienHorizontal);
     i = 1;
@@ -82,6 +79,8 @@ end
 
 
 function Spalte = ermittleSpalte(LinienVertikal, Schwerpunkt)
+% Diese Funktion berechnet die Spaltennummer des Schwerpunktes eines
+% Textes.
     Spalte = 1;
     i = 1;
     N = length(LinienVertikal);
@@ -92,10 +91,15 @@ function Spalte = ermittleSpalte(LinienVertikal, Schwerpunkt)
 end
 
 function VerifizierteZelle = verifiziereZelle(ZelleIn)
+% Diese Funktion koennte eine Zelle ueberpruefen, ob deren Inhalt ueberhaupt
+% sinnvoll ist.
     VerifizierteZelle = '1';
 
 end
 
 function Zelle = verschmeltzeTexte(Anfang, Ende)
+% Falls mehrere Texte einer einzigen Zelle zugeordnet werden, muessten
+% diese verschmeltzt/aneinandergehaengt werden.
+
     Zelle = '1';
 end

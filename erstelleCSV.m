@@ -1,9 +1,9 @@
 function erstelleCSV(Zellen)
+% Diese Funktion erstellt eine CSV-Datei auf Basis des CellArray 'Zellen'.
 
 
-
-filename = 'Anwesenheitsliste.csv';
-file = fopen(filename, 'w');
+Dateiname = 'Anwesenheitsliste.csv';
+Datei = fopen(Dateiname, 'w');
 
 
 [Zeilen Spalten] = size(Zellen);
@@ -11,25 +11,21 @@ file = fopen(filename, 'w');
 for z = 1:Zeilen
    for s = 1:Spalten
        if iscell(Zellen{z,s})
-           
+           % WENN Element ueberhaupt eine 'Cell' ist:
            if ischar(Zellen{z,s}{1,1})
-                fprintf(file, '%s;', Zellen{z,s}{1,1});
-                
+               % WENN Element ueberhaupt ein Zeichen/Wort ist:
+                fprintf(Datei, '%s;', Zellen{z,s}{1,1}); % speichern.                
            else
-               fprintf(file, ';');
-           end
-           
+               fprintf(Datei, ';');
+           end           
        else
-           fprintf(file, ';');
+           fprintf(Datei, ';');
        end
    end
-   fprintf(file, '\n');
+   fprintf(Datei, '\n');
    
 end
-fclose(file);
-
-
-
+fclose(Datei);
 end
 
 
